@@ -1,0 +1,90 @@
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+An error occurred during pruning: too many values to unpack (expected 2)
+Retraining LibriSpeech after pruning...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+An error occurred during pruning: cat(): argument 'tensors' (position 1) must be tuple of Tensors, not Tensor
+Retraining LibriSpeech after pruning...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Pruned 13094639 weights out of 26189279 weights total
+Retraining LibriSpeech after pruning...
+Epoch [1/20] | Train Loss: nan | Val Loss: nan | CER: 0.9907 | WER: 1.0000
+Epoch [2/20] | Train Loss: nan | Val Loss: nan | CER: 0.9907 | WER: 1.0000
+Epoch [3/20] | Train Loss: nan | Val Loss: nan | CER: 0.9907 | WER: 1.0000
+Epoch [4/20] | Train Loss: nan | Val Loss: nan | CER: 0.9907 | WER: 1.0000
+Epoch [5/20] | Train Loss: nan | Val Loss: nan | CER: 0.9907 | WER: 1.0000
+Epoch [6/20] | Train Loss: nan | Val Loss: nan | CER: 0.9907 | WER: 1.0000
+Epoch [7/20] | Train Loss: nan | Val Loss: nan | CER: 0.9907 | WER: 1.0000
+Epoch [8/20] | Train Loss: nan | Val Loss: nan | CER: 0.9907 | WER: 1.0000
+Epoch [9/20] | Train Loss: nan | Val Loss: nan | CER: 0.9907 | WER: 1.0000
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Retraining LibriSpeech after pruning...
+Using device cuda
+Loading existing best weights from states_fused.pth
+dict_keys(['model.acoustic_model.0.0.weight', 'model.acoustic_model.0.0.bias', 'model.acoustic_model.1.0.weight', 'model.acoustic_model.1.0.bias', 'model.acoustic_model.1.2.weight', 'model.acoustic_model.1.2.bias', 'model.acoustic_model.1.4.weight', 'model.acoustic_model.1.4.bias', 'model.acoustic_model.1.6.weight', 'model.acoustic_model.1.6.bias', 'model.acoustic_model.1.8.weight', 'model.acoustic_model.1.8.bias', 'model.acoustic_model.1.10.weight', 'model.acoustic_model.1.10.bias', 'model.acoustic_model.1.12.weight', 'model.acoustic_model.1.12.bias', 'model.acoustic_model.1.14.weight', 'model.acoustic_model.1.14.bias', 'model.acoustic_model.1.16.weight', 'model.acoustic_model.1.16.bias', 'model.acoustic_model.1.18.weight', 'model.acoustic_model.1.18.bias', 'model.acoustic_model.1.20.weight', 'model.acoustic_model.1.20.bias'])
+Pruning LibriSpeech with 50.0% using method gradient...
+Retraining LibriSpeech after pruning...
+Epoch [1/20] | Train Loss: nan | Val Loss: nan | CER: 0.9907 | WER: 1.0000
+Using device cuda
+Loading existing best weights from states_fused.pth
+Pruning LibriSpeech with 50.0% using method gradient...
+Retraining LibriSpeech after pruning...
+Epoch [1/20] | Train Loss: 0.5087 | Val Loss: 0.5636 | CER: 0.1683 | WER: 0.4731
+Using device cuda
+Loading existing best weights from states_fused.pth
+Pruning LibriSpeech with 50.0% using method gradient...

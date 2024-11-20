@@ -1,0 +1,26 @@
+Using device cuda
+Loading existing best weights from states_fused.pth
+Pruning LibriSpeech with 50.0% using method magnitude...
+Loaded masks from masks/magnitude_masks.pth
+Retraining LibriSpeech after pruning...
+Epoch [1/20] | Train Loss: 0.4242 | Val Loss: 0.4754 | CER: 0.1414 | WER: 0.4120
+Epoch [2/20] | Train Loss: 0.3550 | Val Loss: 0.4748 | CER: 0.1391 | WER: 0.4062
+Epoch [3/20] | Train Loss: 0.3105 | Val Loss: 0.4793 | CER: 0.1378 | WER: 0.4031
+Epoch [4/20] | Train Loss: 0.2720 | Val Loss: 0.4817 | CER: 0.1338 | WER: 0.3957
+Epoch [5/20] | Train Loss: 0.2422 | Val Loss: 0.5126 | CER: 0.1390 | WER: 0.4039
+Epoch [6/20] | Train Loss: 0.2179 | Val Loss: 0.5152 | CER: 0.1360 | WER: 0.3990
+Epoch [7/20] | Train Loss: 0.1985 | Val Loss: 0.5305 | CER: 0.1366 | WER: 0.4013
+Epoch [8/20] | Train Loss: 0.1803 | Val Loss: 0.5435 | CER: 0.1342 | WER: 0.3939
+Epoch [9/20] | Train Loss: 0.0889 | Val Loss: 0.5702 | CER: 0.1210 | WER: 0.3631
+Epoch [10/20] | Train Loss: 0.0620 | Val Loss: 0.6259 | CER: 0.1211 | WER: 0.3635
+Epoch [11/20] | Train Loss: 0.0495 | Val Loss: 0.6881 | CER: 0.1223 | WER: 0.3667
+Epoch [12/20] | Train Loss: 0.0408 | Val Loss: 0.7442 | CER: 0.1225 | WER: 0.3677
+Epoch [13/20] | Train Loss: 0.0363 | Val Loss: 0.7988 | CER: 0.1232 | WER: 0.3704
+Epoch [14/20] | Train Loss: 0.0347 | Val Loss: 0.8401 | CER: 0.1224 | WER: 0.3684
+Epoch [15/20] | Train Loss: 0.0157 | Val Loss: 0.9416 | CER: 0.1190 | WER: 0.3605
+Epoch [16/20] | Train Loss: 0.0103 | Val Loss: 1.0144 | CER: 0.1192 | WER: 0.3612
+Epoch [17/20] | Train Loss: 0.0086 | Val Loss: 1.0996 | CER: 0.1189 | WER: 0.3601
+Epoch [18/20] | Train Loss: 0.0076 | Val Loss: 1.1475 | CER: 0.1194 | WER: 0.3629
+Epoch [19/20] | Train Loss: 0.0065 | Val Loss: 1.1782 | CER: 0.1202 | WER: 0.3636
+Epoch [20/20] | Train Loss: 0.0062 | Val Loss: 1.2319 | CER: 0.1200 | WER: 0.3624
+Plots saved as magnitude_0.5_loss_plot.png and magnitude_0.5_cer_wer_plot.png

@@ -1,0 +1,60 @@
+Using device cuda
+Training MNIST without pruning...
+Epoch: 1, Loss: 1.0479, Training Accuracy: 72.26%, Validation Accuracy: 94.66%
+New best model found and saved with validation accuracy: 94.66%
+Epoch: 2, Loss: 0.1241, Training Accuracy: 96.35%, Validation Accuracy: 97.60%
+New best model found and saved with validation accuracy: 97.60%
+Epoch: 3, Loss: 0.0775, Training Accuracy: 97.74%, Validation Accuracy: 98.25%
+New best model found and saved with validation accuracy: 98.25%
+Epoch: 4, Loss: 0.0742, Training Accuracy: 97.81%, Validation Accuracy: 98.37%
+New best model found and saved with validation accuracy: 98.37%
+Epoch: 5, Loss: 0.0641, Training Accuracy: 98.24%, Validation Accuracy: 98.25%
+Epoch: 6, Loss: 0.0556, Training Accuracy: 98.41%, Validation Accuracy: 74.87%
+Epoch: 7, Loss: 0.0626, Training Accuracy: 98.13%, Validation Accuracy: 98.71%
+New best model found and saved with validation accuracy: 98.71%
+Epoch: 8, Loss: 0.1322, Training Accuracy: 96.58%, Validation Accuracy: 97.82%
+Epoch: 9, Loss: 0.0518, Training Accuracy: 98.45%, Validation Accuracy: 98.96%
+New best model found and saved with validation accuracy: 98.96%
+Epoch: 10, Loss: 0.0402, Training Accuracy: 98.74%, Validation Accuracy: 99.09%
+New best model found and saved with validation accuracy: 99.09%
+Pruning MNIST with 50.0%...
+Pruning with threshold 0.0590, Pruned 11724320.0/23448640 weights (50.00% pruned)
+Retraining MNIST after pruning...
+Epoch: 1, Loss: 0.0912, Training Accuracy: 97.44%, Validation Accuracy: 76.90%
+New best model found and saved with validation accuracy: 76.90%
+Epoch: 2, Loss: 0.0962, Training Accuracy: 97.49%, Validation Accuracy: 98.52%
+New best model found and saved with validation accuracy: 98.52%
+Epoch: 3, Loss: 0.0769, Training Accuracy: 97.91%, Validation Accuracy: 98.65%
+New best model found and saved with validation accuracy: 98.65%
+Epoch: 4, Loss: 0.0431, Training Accuracy: 98.79%, Validation Accuracy: 98.93%
+New best model found and saved with validation accuracy: 98.93%
+Epoch: 5, Loss: 0.0344, Training Accuracy: 98.91%, Validation Accuracy: 98.85%
+Epoch: 6, Loss: 0.0880, Training Accuracy: 97.90%, Validation Accuracy: 98.29%
+Epoch: 7, Loss: 0.0470, Training Accuracy: 98.67%, Validation Accuracy: 99.09%
+New best model found and saved with validation accuracy: 99.09%
+Epoch: 8, Loss: 0.0289, Training Accuracy: 99.12%, Validation Accuracy: 99.07%
+Epoch: 9, Loss: 0.0142, Training Accuracy: 99.55%, Validation Accuracy: 99.22%
+New best model found and saved with validation accuracy: 99.22%
+Epoch: 10, Loss: 0.0117, Training Accuracy: 99.67%, Validation Accuracy: 99.28%
+New best model found and saved with validation accuracy: 99.28%
+Using device cuda
+Loading existing best weights from mnist_best_model.pth
+Pruning MNIST with 70.0%...
+Pruning with threshold 0.2514, Pruned 16414047.0/23448640 weights (70.00% pruned)
+Retraining MNIST after pruning...
+Epoch: 1, Loss: 0.0389, Training Accuracy: 98.91%, Validation Accuracy: 98.83%
+New best model found and saved with validation accuracy: 98.83%
+Epoch: 2, Loss: 0.0369, Training Accuracy: 98.84%, Validation Accuracy: 95.85%
+Epoch: 3, Loss: 0.0274, Training Accuracy: 99.17%, Validation Accuracy: 99.18%
+New best model found and saved with validation accuracy: 99.18%
+Epoch: 4, Loss: 0.0503, Training Accuracy: 98.94%, Validation Accuracy: 99.05%
+Epoch: 5, Loss: 0.0384, Training Accuracy: 99.03%, Validation Accuracy: 98.61%
+Epoch: 6, Loss: 0.0289, Training Accuracy: 99.18%, Validation Accuracy: 99.20%
+New best model found and saved with validation accuracy: 99.20%
+Epoch: 7, Loss: 0.0177, Training Accuracy: 99.47%, Validation Accuracy: 98.96%
+Epoch: 8, Loss: 0.0192, Training Accuracy: 99.43%, Validation Accuracy: 99.23%
+New best model found and saved with validation accuracy: 99.23%
+Epoch: 9, Loss: 0.0076, Training Accuracy: 99.75%, Validation Accuracy: 99.35%
+New best model found and saved with validation accuracy: 99.35%
+Epoch: 10, Loss: 0.0078, Training Accuracy: 99.85%, Validation Accuracy: 99.36%
+New best model found and saved with validation accuracy: 99.36%
