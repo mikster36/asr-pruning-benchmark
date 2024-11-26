@@ -1,4 +1,5 @@
 import sys
+import os
 
 import torch
 import torchaudio
@@ -50,7 +51,7 @@ def prune_test(model, test_loader, criterion, lm, batch_size, evaluation):
     return test_loss, cer, wer
 
 
-def prune_sensitivity(model, data_loader, criterion, prune_ratio=0.2,
+def prune_sensitivity(model, data_loader, criterion, prune_ratios=None,
                       method='filter', evaluation='full', batch_size=1, logger=None, lm=None):
     """
     Prune weights based on sensitivity criterion. We observe the change in loss induced
@@ -71,6 +72,8 @@ def prune_sensitivity(model, data_loader, criterion, prune_ratio=0.2,
     Returns:
         model: Pruned model.
     """
+    if prune_ratios is None:
+        prune_ratios = [0.2]
     if logger:
         sys.stdout = logger
     else:
@@ -80,6 +83,19 @@ def prune_sensitivity(model, data_loader, criterion, prune_ratio=0.2,
         sensitivities = []
         total_weights = 0
         device = next(model.parameters()).device
+        masks = {}
+
+        for i in range(len(prune_ratios), 0, -1):
+            prune_ratio = prune_ratios[i]
+            mask_path = f'masks/sensitivity/{prune_ratio}_masks.pth'
+            if os.path.exists(mask_path):
+                mask = torch.load(mask_path)
+                print(f'Loaded masks from {mask_path}')
+                masks[str(prune_ratio)] = mask
+                prune_ratios.remove(prune_ratio)
+
+        if len(prune_ratios) == 0:
+            return model, masks
 
         if method == 'gradient':
             inputs, targets = next(iter(data_loader))
@@ -99,6 +115,7 @@ def prune_sensitivity(model, data_loader, criterion, prune_ratio=0.2,
                                               for i in range(param.numel())])
 
         else:
+
             baseline_loss, _, _ = prune_test(model, data_loader, criterion, lm, batch_size, evaluation)
 
             with torch.no_grad():
@@ -132,30 +149,36 @@ def prune_sensitivity(model, data_loader, criterion, prune_ratio=0.2,
         sensitivities = [(s[0] / total_sensitivity, s[1], s[2], s[3]) for s in sensitivities]
 
         sensitivities.sort()
-        num_to_prune = int(prune_ratio * len(sensitivities))
-        to_prune = sensitivities[:num_to_prune]
-        total_pruned_weights = sum(prune_info[3] for prune_info in to_prune)
+        for prune_ratio in prune_ratios:
+            num_to_prune = int(prune_ratio * len(sensitivities))
+            to_prune = sensitivities[:num_to_prune]
+            total_pruned_weights = sum(prune_info[3] for prune_info in to_prune)
 
-        masks = {}
-        with torch.no_grad():
-            for _, name, idx, _ in tqdm(to_prune, "Pruning weights", file=sys.stdout):
-                param = dict(model.named_parameters())[name]
-                param.view(-1)[idx] = 0.0
-                # param.requires_grad = False
+            mask = {}
+            with torch.no_grad():
+                for _, name, idx, _ in tqdm(to_prune, "Pruning weights", file=sys.stdout):
+                    param = dict(model.named_parameters())[name]
+                    param.view(-1)[idx] = 0.0
+                    # param.requires_grad = False
 
-                module = dict(model.named_modules()).get(name)
-                if module is not None and not hasattr(module, 'weight_mask'):
-                    module.weight_mask = torch.ones_like(param)
-                if module is not None:
-                    module.weight_mask.view(-1)[idx] = 0.0
+                    module = dict(model.named_modules()).get(name)
+                    if module is not None and not hasattr(module, 'weight_mask'):
+                        module.weight_mask = torch.ones_like(param)
+                    if module is not None:
+                        module.weight_mask.view(-1)[idx] = 0.0
 
-                if name not in masks:
-                    masks[name] = torch.ones_like(param)
-                masks[name].view(-1)[idx] = 0.0
+                    if name not in mask:
+                        mask[name] = torch.ones_like(param)
+                    mask[name].view(-1)[idx] = 0.0
 
-        torch.save(masks, './masks/gradient_masks.pth')
+            if not os.path.exists('./masks'):
+                os.mkdir('./masks/')
+            if not os.path.exists('./masks/sensitivity'):
+                os.mkdir('./masks/sensitivity')
+            torch.save(mask, f'./masks/sensitivity/{prune_ratio}_wav2letter_masks.pth')
 
-        print(f"Pruned {total_pruned_weights} weights out of {total_weights} weights total")
+            print(f"Pruned {total_pruned_weights} weights out of {total_weights} weights total")
+            masks[str(prune_ratio)] = mask
 
     finally:
         if logger:

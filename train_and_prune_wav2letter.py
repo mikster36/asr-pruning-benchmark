@@ -161,8 +161,8 @@ def get_data_loaders(dataset_path, batch_size):
 
 
 def train_model(model, train_loader, test_loader, epochs, lr=0.01, save_best=True,
-                save_path="best_model.pth", criterion=nn.CTCLoss(), loss_plot_path='wav2letter_loss_plot.png',
-                cer_wer_plot_path='wav2letter_cer_wer.png'):
+                save_path="best_model.pth", criterion=nn.CTCLoss(), loss_plot_path='loss_plot_wav2letter.png',
+                cer_wer_plot_path='cer_wer_wav2letter.png'):
     optimizer = torch.optim.AdamW(model.parameters(), lr, weight_decay=1e-4)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.3, patience=5)
 
@@ -240,7 +240,7 @@ def train_model(model, train_loader, test_loader, epochs, lr=0.01, save_best=Tru
     return train_loss_list, val_loss_list, cer_list, wer_list
 
 
-def main(dataset_path, prune_method, prune_ratio, epochs=10, batch_size=8, lr=0.01,
+def prune_and_train(dataset_path, prune_method, prune_ratios, epochs=10, batch_size=8, lr=0.01,
          save_path="best_model.pth", log_file="log.txt"):
     logger = Logger(log_file)
     sys.stdout = logger
@@ -268,31 +268,35 @@ def main(dataset_path, prune_method, prune_ratio, epochs=10, batch_size=8, lr=0.
             train_model(model=model, train_loader=train_loader, test_loader=test_loader, lr=lr, epochs=epochs, save_path=save_path,
                         criterion=criterion, save_best=True)
 
-        print(f"Pruning LibriSpeech with {prune_ratio * 100}% using method {prune_method}...")
-        mask_path = f'masks/{prune_method}_masks.pth'
-        if os.path.exists(mask_path):
-            masks = torch.load(mask_path)
-            print(f'Loaded masks from {mask_path}')
-        else:
-            masks = {}
-            if prune_method == 'sensitivity':
-                model, masks = prune_sensitivity(model=model, data_loader=test_loader, criterion=criterion, prune_ratio=prune_ratio,
-                                          method='filter', evaluation="batch", batch_size=1, logger=logger, lm=lm)
-            elif prune_method == 'gradient':
-                model, masks = prune_gradient(model=model, data_loader=test_loader, criterion=criterion, prune_ratio=prune_ratio,
-                                       device=device, logger=logger)
-            elif prune_method == 'magnitude':
-                model, masks = prune_magnitude(model=model, prune_ratio=prune_ratio, logger=logger)
-            elif prune_method == 'random':
-                model, masks = prune_random(model=model, prune_ratio=prune_ratio, logger=logger)
+        print(f"Pruning LibriSpeech using method {prune_method}...")
+        masks = []
+        if prune_method == 'sensitivity':
+            model, masks = prune_sensitivity(model=model, data_loader=test_loader, criterion=criterion, prune_ratios=prune_ratios,
+                                      method='filter', evaluation="batch", batch_size=1, logger=logger, lm=lm)
+        elif prune_method == 'gradient':
+            model, masks = prune_gradient(model=model, data_loader=test_loader, criterion=criterion, prune_ratios=prune_ratios,
+                                   device=device, logger=logger)
+        elif prune_method == 'magnitude':
+            model, masks = prune_magnitude(model=model, prune_ratios=prune_ratios, logger=logger)
+        elif prune_method == 'random':
+            model, masks = prune_random(model=model, prune_ratios=prune_ratios, logger=logger)
 
-        model = apply_masking(model, masks)
+        rd_data = []
+        for prune_ratio, mask in masks.items():
+            model = apply_masking(model, mask)
 
-        print(f"Retraining LibriSpeech after pruning...")
-        train_model(model=model, train_loader=train_loader, test_loader=test_loader, lr=lr, epochs=epochs,
-                    criterion=criterion, save_best=True, save_path=f'{prune_method}_{prune_ratio}_wav2letter_best.pth',
-                    cer_wer_plot_path=f'{prune_method}_{prune_ratio}_cer_wer_plot.png',
-                    loss_plot_path=f'{prune_method}_{prune_ratio}_loss_plot.png')
+            print(f"Retraining LibriSpeech after pruning...")
+            if not os.path.exists('./weights/'):
+                os.mkdir('./weights')
+            if not os.path.exists(f'./weights/{prune_method}'):
+                os.mkdir(f'./weights/{prune_method}')
+            _, _, cer, wer = train_model(model=model, train_loader=train_loader, test_loader=test_loader, lr=lr, epochs=epochs,
+                        criterion=criterion, save_best=True, save_path=f'{prune_method}_{prune_ratio}_wav2letter_best.pth',
+                        cer_wer_plot_path=f'{prune_method}_{prune_ratio}_cer_wer_plot.png',
+                        loss_plot_path=f'{prune_method}_{prune_ratio}_loss_plot.png')
+
+            rd_data.append((prune_ratio, min(cer), min(wer)))
+        return rd_data
 
     finally:
         logger.flush()
@@ -309,17 +313,44 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=16, help="Batch size for training and validation.")
     parser.add_argument('--lr', type=float, default=3e-4, help="Learning rate for the optimizer.")
     parser.add_argument('--save_path', type=str, default="states_fused.pth", help="Path to save the best model state.")
-    parser.add_argument('--log_file', type=str, default="wav2letter_librispeech_training_log.txt", help="File to save the training log.")
+    parser.add_argument('--log_file', type=str, default="log_wav2letter_librispeech.txt", help="File to save the training log.")
+    parser.add_argument('--all_ratios', action=argparse.BooleanOptionalAction, help="Whether to prune using all ratios (use to make rate-distortion curve)")
 
     args = parser.parse_args()
 
-    main(
-        dataset_path=args.dataset_path,
-        prune_method=args.prune_method,
-        prune_ratio=args.prune_ratio,
-        epochs=args.epochs,
-        batch_size=args.batch_size,
-        lr=args.lr,
-        save_path=args.save_path,
-        log_file=f"{args.prune_method}_{args.log_file}"
-    )
+    if args.all_ratios:
+        ratios = [0.1, 0.2, 0.5, 0.7, 0.9]
+        rd_data = prune_and_train(
+                    dataset_path=args.dataset_path,
+                    prune_method=args.prune_method,
+                    prune_ratios=ratios,
+                    epochs=args.epochs,
+                    batch_size=args.batch_size,
+                    lr=args.lr,
+                    save_path=args.save_path,
+                    log_file=f"{args.prune_method}_{args.log_file}"
+                )
+
+        prune_ratios, cer_values, wer_values = zip(*rd_data)
+        plt.figure(figsize=(8, 5))
+        plt.plot(prune_ratios, cer_values, marker='o', label='CER (Character Error Rate)')
+        plt.plot(prune_ratios, wer_values, marker='s', label='WER (Word Error Rate)')
+
+        plt.xlabel('Prune Ratio')
+        plt.ylabel('Error Rate')
+        plt.legend()
+        plt.grid(True)
+
+        plt.savefig(f'{args.prune_method}_rd_curve_wav2letter_librispeech.png')
+        plt.close()
+    else:
+        prune_and_train(
+            dataset_path=args.dataset_path,
+            prune_method=args.prune_method,
+            prune_ratios=[args.prune_ratio],
+            epochs=args.epochs,
+            batch_size=args.batch_size,
+            lr=args.lr,
+            save_path=args.save_path,
+            log_file=f"{args.prune_method}_{args.log_file}"
+        )

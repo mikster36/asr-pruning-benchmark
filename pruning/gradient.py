@@ -1,3 +1,5 @@
+import os
+
 import torch
 import sys
 from tqdm import tqdm
@@ -6,8 +8,10 @@ from logger import Logger
 
 
 def prune_gradient(
-    model: torch.nn.Module, data_loader, device, logger, criterion, prune_ratio=0.3
+    model: torch.nn.Module, data_loader, device, logger, criterion, prune_ratios=None
 ):
+    if prune_ratios is None:
+        prune_ratios = [0.3]
     if logger:
         sys.stdout = logger
     else:
@@ -15,6 +19,19 @@ def prune_gradient(
     model.train()  # Set the model to training mode
     total = 0
     gradients = []
+    masks = {}
+
+    for i in range(len(prune_ratios), 0, -1):
+        prune_ratio = prune_ratios[i]
+        mask_path = f'masks/gradient/{prune_ratio}_masks.pth'
+        if os.path.exists(mask_path):
+            mask = torch.load(mask_path)
+            print(f'Loaded masks from {mask_path}')
+            masks[str(prune_ratio)] = mask
+            prune_ratios.remove(prune_ratio)
+
+    if len(prune_ratios) == 0:
+        return model, masks
 
     # Get a batch of data
     inputs, labels, input_lengths, target_lengths = next(iter(data_loader))
@@ -46,30 +63,36 @@ def prune_gradient(
 
     # Sort gradients and determine pruning threshold
     gradients.sort()
-    num_to_prune = int(prune_ratio * len(gradients))
-    to_prune = gradients[:num_to_prune]
+    if not os.path.exists('./masks'):
+        os.mkdir('./masks/')
+    if not os.path.exists('./masks/gradient'):
+        os.mkdir('./masks/gradient')
+    for prune_ratio in prune_ratios:
+        num_to_prune = int(prune_ratio * len(gradients))
+        to_prune = gradients[:num_to_prune].copy()
 
-    masks = {}
-    # Apply pruning based on gradient magnitude
-    with torch.no_grad():
-        for _, name, idx in tqdm(to_prune, 'Pruning weights', file=sys.stdout):
-            param = dict(model.named_parameters())[name]
-            param.view(-1)[idx] = 0.0
-            # Do not set requires_grad to False; keep it True for future gradient updates
+        mask = {}
+        # Apply pruning based on gradient magnitude
+        with torch.no_grad():
+            for _, name, idx in tqdm(to_prune, 'Pruning weights', file=sys.stdout):
+                param = dict(model.named_parameters())[name]
+                param.view(-1)[idx] = 0.0
+                # Do not set requires_grad to False; keep it True for future gradient updates
 
-            # Optionally create a mask
-            module = dict(model.named_modules()).get(name, None)
-            if module and not hasattr(module, 'weight_mask'):
-                module.weight_mask = torch.ones_like(param)
-            if module:
-                module.weight_mask.view(-1)[idx] = 0.0
+                # Optionally create a mask
+                module = dict(model.named_modules()).get(name, None)
+                if module and not hasattr(module, 'weight_mask'):
+                    module.weight_mask = torch.ones_like(param)
+                if module:
+                    module.weight_mask.view(-1)[idx] = 0.0
 
-            if name not in masks:
-                masks[name] = torch.ones_like(param)
-            masks[name].view(-1)[idx] = 0.0
+                if name not in mask:
+                    mask[name] = torch.ones_like(param)
+                mask[name].view(-1)[idx] = 0.0
 
-    torch.save(masks, './masks/gradient_masks.pth')
+        torch.save(mask, f'./masks/gradient/{prune_ratio}_wav2letter_masks.pth')
 
-    print(f"Pruned {num_to_prune} weights out of {total} weights total")
+        print(f"Pruned {num_to_prune} weights out of {total} weights total")
+        masks[str(prune_ratio)] = mask
 
     return model, masks
