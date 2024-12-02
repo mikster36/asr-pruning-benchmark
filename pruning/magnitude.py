@@ -22,7 +22,7 @@ def prune_magnitude(
     weights = []
     masks = {}
 
-    for i in range(len(prune_ratios), 0, -1):
+    for i in range(len(prune_ratios) - 1, 0, -1):
         prune_ratio = prune_ratios[i]
         mask_path = f'masks/magnitude/{prune_ratio}_masks.pth'
         if os.path.exists(mask_path):
@@ -53,12 +53,21 @@ def prune_magnitude(
         # Apply pruning by creating masks for each parameter
         mask = {}
         with torch.no_grad():
-            for weight_magnitude, name in tqdm(weights, 'Pruning weights', file=sys.stdout):
-                m = (weight_magnitude >= threshold[-1]).float()
+            for _, name, idx in tqdm(to_prune, 'Pruning weights', file=sys.stdout):
                 param = dict(model.named_parameters())[name]
-                param.data.mul_()
+                param.view(-1)[idx] = 0.0
+                # Do not set requires_grad to False; keep it True for future gradient updates
 
-                mask[name] = m
+                # Optionally create a mask
+                module = dict(model.named_modules()).get(name, None)
+                if module and not hasattr(module, 'weight_mask'):
+                    module.weight_mask = torch.ones_like(param)
+                if module:
+                    module.weight_mask.view(-1)[idx] = 0.0
+
+                if name not in mask:
+                    mask[name] = torch.ones_like(param)
+                mask[name].view(-1)[idx] = 0.0
 
         if not os.path.exists('./masks'):
             os.mkdir('./masks/')

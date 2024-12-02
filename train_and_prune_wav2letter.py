@@ -135,6 +135,7 @@ def get_norm(parameters, norm_type=2.0):
         p.grad.detach(), norm_type) for p in parameters if p.grad is not None]), norm_type)
     return total_norm
 
+
 lm = GreedyLM(labels)
 
 
@@ -214,8 +215,8 @@ def train_model(model, train_loader, test_loader, epochs, lr=0.01, save_best=Tru
     plt.figure(figsize=(15, 6))
     # Plotting loss
     plt.subplot(1, 2, 1)
-    plt.plot(range(1, epochs+1), train_loss_list, label='Train Loss', marker='o')
-    plt.plot(range(1, epochs+1), val_loss_list, label='Validation Loss', marker='o')
+    plt.plot(range(1, epochs + 1), train_loss_list, label='Train Loss', marker='o')
+    plt.plot(range(1, epochs + 1), val_loss_list, label='Validation Loss', marker='o')
     plt.title('Training and Validation Loss')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
@@ -225,8 +226,8 @@ def train_model(model, train_loader, test_loader, epochs, lr=0.01, save_best=Tru
 
     # Plotting CER and WER
     plt.subplot(1, 2, 2)
-    plt.plot(range(1, epochs+1), cer_list, label='Character Error Rate (CER)', marker='o')
-    plt.plot(range(1, epochs+1), wer_list, label='Word Error Rate (WER)', marker='o')
+    plt.plot(range(1, epochs + 1), cer_list, label='Character Error Rate (CER)', marker='o')
+    plt.plot(range(1, epochs + 1), wer_list, label='Word Error Rate (WER)', marker='o')
     plt.title('Character Error Rate (CER) and Word Error Rate (WER)')
     plt.xlabel('Epochs')
     plt.ylabel('Error Rate')
@@ -241,7 +242,7 @@ def train_model(model, train_loader, test_loader, epochs, lr=0.01, save_best=Tru
 
 
 def prune_and_train(dataset_path, prune_method, prune_ratios, epochs=10, batch_size=8, lr=0.01,
-         save_path="best_model.pth", log_file="log.txt"):
+                    save_path="best_model.pth", log_file="log.txt"):
     logger = Logger(log_file)
     sys.stdout = logger
 
@@ -265,17 +266,20 @@ def prune_and_train(dataset_path, prune_method, prune_ratios, epochs=10, batch_s
             model.load_state_dict(new_state_dict)
         else:
             print(f"Training LibriSpeech without pruning...")
-            train_model(model=model, train_loader=train_loader, test_loader=test_loader, lr=lr, epochs=epochs, save_path=save_path,
+            train_model(model=model, train_loader=train_loader, test_loader=test_loader, lr=lr, epochs=epochs,
+                        save_path=save_path,
                         criterion=criterion, save_best=True)
 
         print(f"Pruning LibriSpeech using method {prune_method}...")
         masks = []
         if prune_method == 'sensitivity':
-            model, masks = prune_sensitivity(model=model, data_loader=test_loader, criterion=criterion, prune_ratios=prune_ratios,
-                                      method='filter', evaluation="batch", batch_size=1, logger=logger, lm=lm)
+            model, masks = prune_sensitivity(model=model, data_loader=test_loader, criterion=criterion,
+                                             prune_ratios=prune_ratios,
+                                             method='filter', evaluation="batch", batch_size=1, logger=logger, lm=lm)
         elif prune_method == 'gradient':
-            model, masks = prune_gradient(model=model, data_loader=test_loader, criterion=criterion, prune_ratios=prune_ratios,
-                                   device=device, logger=logger)
+            model, masks = prune_gradient(model=model, data_loader=test_loader, criterion=criterion,
+                                          prune_ratios=prune_ratios,
+                                          device=device, logger=logger)
         elif prune_method == 'magnitude':
             model, masks = prune_magnitude(model=model, prune_ratios=prune_ratios, logger=logger)
         elif prune_method == 'random':
@@ -283,21 +287,41 @@ def prune_and_train(dataset_path, prune_method, prune_ratios, epochs=10, batch_s
 
         rd_data = []
         for prune_ratio, mask in masks.items():
+            # Reload the original pretrained weights
+            state_dict = torch.load(save_path)
+
+            new_state_dict = {}
+            for key in state_dict.keys():
+                new_key = 'model.' + key
+                new_state_dict[new_key] = state_dict[key]
+            model.load_state_dict(new_state_dict)
+
+            # Apply the pruning mask
             model = apply_masking(model, mask)
 
-            print(f"Retraining LibriSpeech after pruning...")
-            if not os.path.exists('./weights/'):
-                os.mkdir('./weights')
-            if not os.path.exists(f'./weights/{prune_method}'):
-                os.mkdir(f'./weights/{prune_method}')
-            _, _, cer, wer = train_model(model=model, train_loader=train_loader, test_loader=test_loader, lr=lr, epochs=epochs,
-                        criterion=criterion, save_best=True, save_path=f'{prune_method}_{prune_ratio}_wav2letter_best.pth',
-                        cer_wer_plot_path=f'{prune_method}_{prune_ratio}_cer_wer_plot.png',
-                        loss_plot_path=f'{prune_method}_{prune_ratio}_loss_plot.png')
+            print(f"Retraining LibriSpeech after pruning with ratio {prune_ratio}...")
+            # Ensure output directories exist
+            os.makedirs('./weights/', exist_ok=True)
+            os.makedirs(f'./weights/{prune_method}', exist_ok=True)
 
+            # Retrain the model
+            _, _, cer, wer = train_model(
+                model=model,
+                train_loader=train_loader,
+                test_loader=test_loader,
+                lr=lr,
+                epochs=epochs,
+                criterion=criterion,
+                save_best=True,
+                save_path=f'./weights/{prune_method}/{prune_method}_{prune_ratio}_wav2letter_best.pth',
+                cer_wer_plot_path=f'./weights/{prune_method}/{prune_method}_{prune_ratio}_cer_wer_plot.png',
+                loss_plot_path=f'./weights/{prune_method}/{prune_method}_{prune_ratio}_loss_plot.png'
+            )
+
+            # Store results
             rd_data.append((prune_ratio, min(cer), min(wer)))
-        return rd_data
 
+        return rd_data
     finally:
         logger.flush()
         logger.close()
@@ -307,29 +331,32 @@ def prune_and_train(dataset_path, prune_method, prune_ratios, epochs=10, batch_s
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Train and prune the Wav2Letter model on LibriSpeech data.")
     parser.add_argument('--dataset_path', type=str, default="./data", help="Path to the dataset.")
-    parser.add_argument('--prune_method', type=str, default="gradient", choices=['sensitivity', 'gradient', 'magnitude', 'random'], help="Pruning method to use.")
+    parser.add_argument('--prune_method', type=str, default="gradient",
+                        choices=['sensitivity', 'gradient', 'magnitude', 'random'], help="Pruning method to use.")
     parser.add_argument('--prune_ratio', type=float, default=0.5, help="Ratio of pruning (e.g., 0.5 for 50%).")
     parser.add_argument('--epochs', type=int, default=20, help="Number of training epochs.")
     parser.add_argument('--batch_size', type=int, default=16, help="Batch size for training and validation.")
     parser.add_argument('--lr', type=float, default=3e-4, help="Learning rate for the optimizer.")
     parser.add_argument('--save_path', type=str, default="states_fused.pth", help="Path to save the best model state.")
-    parser.add_argument('--log_file', type=str, default="log_wav2letter_librispeech.txt", help="File to save the training log.")
-    parser.add_argument('--all_ratios', action=argparse.BooleanOptionalAction, help="Whether to prune using all ratios (use to make rate-distortion curve)")
+    parser.add_argument('--log_file', type=str, default="log_wav2letter_librispeech.txt",
+                        help="File to save the training log.")
+    parser.add_argument('--all_ratios', action=argparse.BooleanOptionalAction,
+                        help="Whether to prune using all ratios (use to make rate-distortion curve)")
 
     args = parser.parse_args()
 
     if args.all_ratios:
         ratios = [0.1, 0.2, 0.5, 0.7, 0.9]
         rd_data = prune_and_train(
-                    dataset_path=args.dataset_path,
-                    prune_method=args.prune_method,
-                    prune_ratios=ratios,
-                    epochs=args.epochs,
-                    batch_size=args.batch_size,
-                    lr=args.lr,
-                    save_path=args.save_path,
-                    log_file=f"{args.prune_method}_{args.log_file}"
-                )
+            dataset_path=args.dataset_path,
+            prune_method=args.prune_method,
+            prune_ratios=ratios,
+            epochs=args.epochs,
+            batch_size=args.batch_size,
+            lr=args.lr,
+            save_path=args.save_path,
+            log_file=f"{args.prune_method}_{args.log_file}"
+        )
 
         prune_ratios, cer_values, wer_values = zip(*rd_data)
         plt.figure(figsize=(8, 5))
@@ -341,7 +368,7 @@ if __name__ == '__main__':
         plt.legend()
         plt.grid(True)
 
-        plt.savefig(f'{args.prune_method}_rd_curve_wav2letter_librispeech.png')
+        plt.savefig(f'{args.prune_method}_rd_curve_wav2letter_librispeech_1.png')
         plt.close()
     else:
         prune_and_train(
