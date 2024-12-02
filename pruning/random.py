@@ -19,7 +19,7 @@ def prune_random(model: torch.nn.Module, prune_ratios=None, logger=None):
     total = 0
     weights = []
     masks = {}
-    for i in range(len(prune_ratios), 0, -1):
+    for i in range(len(prune_ratios) - 1, 0, -1):
         prune_ratio = prune_ratios[i]
         mask_path = f'masks/gradient/{prune_ratio}_masks.pth'
         if os.path.exists(mask_path):
